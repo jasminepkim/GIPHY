@@ -1,31 +1,47 @@
 $(document).ready(function () {
 
-// Initial array of cities to loop through
-var topics = ["Paris", "Dubai", "New York City", "Seoul", "Los Angeles", "Tokyo", "San Diego", "Portland", "Honolulu", "Singapore", "San Francisco", "Sydney", "Seattle", "Bali", "Rome", "Istanbul", "Vancouver", "Mexico City"];
-console.log(topics);
+    // Initial array of cities to loop through
+    var topics = ["Paris", "Dubai", "New York City", "Seoul", "Los Angeles", "Tokyo", "San Diego", "Portland", "Honolulu", "Singapore", "San Francisco", "Sydney", "Seattle", "Bali", "Rome", "Istanbul", "Vancouver", "Mexico City"];
+    // console.log(topics);
+    var state;
 
-renderButtons();
+    renderButtons(topics);
 
-// Deleting the initially loaded city buttons prior to adding new city buttons (otherwise we will have repeat buttons)
-function renderButtons() {
-    $("#cityButtons").empty();
-    // To loop through the array of topics
-    for (var i = 0; i < topics.length; i++) {
-        var c = $("<button>");
-        // Adding a class for the row of buttons created from the array
-        c.addClass("citiesReady");
-        // Adding a data attribute with a value of the topics at index i
-        c.attr("data-name", topics[i]);
-        // Adding text to the buttons with a value of the topics at index i
-        c.text(topics[i]);
-        $("#cityButtons").append(c);
+    // Deleting the initially loaded city buttons prior to adding new city buttons (otherwise we will have repeat buttons)
+    function renderButtons(cityArray) {
+        console.log("render function is working");
+        $("#cityButtons").empty();
+        // To loop through the array of topics
+        for (var i = 0; i < cityArray.length; i++) {
+            var c = $("<button>");
+            // Adding a class for the row of buttons created from the array
+            c.addClass("citiesReady");
+            // Adding a data attribute with a value of the topics at index i
+            c.attr("data-name", cityArray[i]);
+            // Adding text to the buttons with a value of the topics at index i
+            c.text(cityArray[i]);
+            $("#cityButtons").append(c);
+        }
+        console.log("new city array" + cityArray);
     }
-}
 
-    $("button").on("click", function (action) {
+    // To allow the user's input from the form to create buttons
+    // "submit" button
+    $("#addCity").on("click", function (event) {
+        // "preventDefault" = prevents from refreshing after clicking the "submit" button
+        event.preventDefault();
+        var cityShown = $("#city-input").val();
+        console.log(cityShown);
+        topics.push(cityShown);
+        console.log(topics);
+        renderButtons(topics);
+    });
+    // console.log(topics);
+
+    $(document).on("click", ".citiesReady", function () {
         var city = $(this).attr("data-name");
-        console.log(this);
-        console.log(city);
+        // console.log(this);
+        // console.log(city);
         var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + city + "&api_key=ad94bb02f7af4c71ad35b33a437f2aaf&limit=10&rating=pg";
 
         // Performing an AJAX call to call both the queryURL and "GET" method
@@ -36,25 +52,52 @@ function renderButtons() {
 
             // The .done function is an AJAX callback that returns after the request from the server has been completed
             .done(function (response) {
-                console.log(response);
+                // console.log(response);
                 var results = response.data;
-                console.log(response.data);
+
                 // To loop through the response results generated from the topics array
                 for (var i = 0; i < results.length; i++) {
-                    var cityDiv = $("<div>");
-                    // Paragraph tag created for the gif ratings
-                    var p = $("<p>").text("Rating: " + results[i].rating);
-                    console.log(results[i].rating);
-                    // Image tag created for the gifs
+                    // console.log(results[i]);
+                    var cityDiv = $("<div id='gifdiv'>");
+                    var rating = results[i].rating;
+                    var p = $("<p>").text("Rating: " + rating);
+                    var stillGif = results[i].images.fixed_height_still.url;
+                    var motionGif = results[i].images.fixed_height.url;
                     var cityImage = $("<img>");
-                    cityImage.attr("src", results[i].images.fixed_height.url);
-                    console.log(results[i].images.fixed_height.url);
-                    // To append the ratings and gifs and to update the HTML
-                    cityDiv.append(p);
+
+                    cityImage.attr("src", stillGif);
+                    cityImage.attr("data-still", stillGif);
+                    cityImage.attr("data-animate", motionGif);
+                    cityImage.attr("data-state", "still");
+
+                    cityImage.addClass("eachgif");
+
                     cityDiv.append(cityImage);
-                    $("#cities").append(cityImage);
-                    $("#cities").append(p);
+                    cityDiv.append(p);
+
+                    $("#cities").append(cityDiv);
+
+                    //     var cityDiv = $("<div>");
+                    //     // Paragraph tag created for the gif ratings
+                    //     var p = $("<p>").text("Rating: " + results[i].rating);
+                    //     // console.log(results[i].rating);
+                    //     // Image tag created for the gifs
+                    //     var imgDiv = $("<div id='gif'>");
+
+                    //     var cityImage = $("<img>");
+                    //     // To load gifs as static initially ("_still")
+                    //     stillGif = results[i].images.fixed_height_still.url;
+                    //     cityImage.attr("src", results[i].images.fixed_height_still.url);
+                    //     // console.log(results[i].images.fixed_height.url);
+                    //     // To append the ratings and gifs and to update the HTML
+
+                    //     imgDiv.append(cityImage + results[i].images.fixed_height_still.url);
+                    //     cityDiv.append(p + results[i].images.fixed_height_still.url);
+                    //     cityDiv.append(cityImage);
+                    //     $("#cities").append(cityImage);
+                    //     $("#cities").append(p);
                 }
+                // console.log(stillGif);
 
             }); // to close the done function
 
@@ -63,28 +106,30 @@ function renderButtons() {
 
     }) // to close the button on click function
 
-    // To allow the user's input from the form to create buttons
-    // Do not place this anywhere else int the document.ready function - will create multiple buttons 
-    $("#addCity").on("click", function (event) {
-        event.preventDefault();
-        var cityShown = $("#city-input").val().trim();
-        topics.push(cityShown);
-        renderButtons();
-        //HOW DO I MAKE THIS LOOP THROUGH THE GIPHY API???
-        //WHY CAN'T I CLICK ON ANY OTHER BUTTON AFTER ONE NEW BUTTON HAS BEEN CREATED?
+    $(document).on("click", ".eachgif", function () {
+        var state = $(this).attr("data-state");
+        console.log(state);
+        if (state === "still") {
+            $(this).attr("src", $(this).attr("data-animate"));
+            $(this).attr("data-state", "animate");
+        } else {
+            $(this).attr("src", $(this).attr("data-still"));
+            $(this).attr("data-state", "still");
+        }
     });
 
-}); // to close the document.ready function
+    // Freeze and unfreeze the gifs upon click
+    // $("img.eachgif").on("click", function () {
+    //     console.log("click");
+    //     // var state = $(this).attr("data-state");
+    //     // if (state === "still") {
+    //     //     $(this).attr("src", $(this).attr("data-animate"));
+    //     //     $(this).attr("data-state", "animate");
+    //     // } else {
+    //     //     $(this).attr("src", $(this).attr("data-still"));
+    //     //     $(this).attr("data-state", "still");
+    //     // }
+    // });
 
-                // // Freeze and unfreeze the gifs upon click
-                // $(".gif").on("click", function () {
-                //     console.log(this);
-                //     var state = $(this).attr("data-state");
-                //     if (state === "still") {
-                //         $(this).attr("src", $(this).attr("data-animate"));
-                //         $(this).attr("data-state", "animate");
-                //     } else {
-                //         $(this).attr("src", $(this).attr("data-still"));
-                //         $(this).attr("data-state", "still");
-                //     }
-                // });
+
+}); // to close the document.ready function
