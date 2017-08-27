@@ -1,0 +1,24 @@
+.citiesReady {
+    margin-left: 8px;
+    margin-bottom: 5px;
+}
+
+h2 {
+    margin-left: 8px;
+    margin-bottom: 25px;
+}
+
+#city-form {
+    float: right;
+    margin-right: 8px;
+    margin-bottom: 5px;
+}
+
+#addCity {
+    float: right;
+    margin-top: 5px;
+}
+
+img {
+    margin-bottom: 10px;
+}

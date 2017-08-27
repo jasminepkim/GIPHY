@@ -1,3 +1,5 @@
+$(document).ready(function () {
+
 // Initial array of cities to loop through
 var topics = ["Paris", "Dubai", "New York City", "Seoul", "Los Angeles", "Tokyo", "San Diego", "Portland", "Honolulu", "Singapore", "San Francisco", "Sydney", "Seattle", "Bali", "Rome", "Istanbul", "Vancouver", "Mexico City"];
 console.log(topics);
@@ -20,9 +22,7 @@ function renderButtons() {
     }
 }
 
-$(document).ready(function () {
-
-    $("button").on("click", function () {
+    $("button").on("click", function (action) {
         var city = $(this).attr("data-name");
         console.log(this);
         console.log(city);
@@ -56,19 +56,6 @@ $(document).ready(function () {
                     $("#cities").append(p);
                 }
 
-                // Freeze and unfreeze the gifs upon click
-                $(".gif").on("click", function () {
-                    console.log(this);
-                    var state = $(this).attr("data-state");
-                    if (state === "still") {
-                        $(this).attr("src", $(this).attr("data-animate"));
-                        $(this).attr("data-state", "animate");
-                    } else {
-                        $(this).attr("src", $(this).attr("data-still"));
-                        $(this).attr("data-state", "still");
-                    }
-                });
-
             }); // to close the done function
 
         // To empty the current images and load the new ones when a new button is clicked
@@ -76,48 +63,28 @@ $(document).ready(function () {
 
     }) // to close the button on click function
 
+    // To allow the user's input from the form to create buttons
+    // Do not place this anywhere else int the document.ready function - will create multiple buttons 
     $("#addCity").on("click", function (event) {
         event.preventDefault();
         var cityShown = $("#city-input").val().trim();
         topics.push(cityShown);
         renderButtons();
+        //HOW DO I MAKE THIS LOOP THROUGH THE GIPHY API???
+        //WHY CAN'T I CLICK ON ANY OTHER BUTTON AFTER ONE NEW BUTTON HAS BEEN CREATED?
     });
 
-}) // to close the document.ready function
+}); // to close the document.ready function
 
-// =============================================================================================================
-
-
-
-// // Calling the renderButtons function at least once to display the initial list of cities
-// renderButtons();
-
-// $("button").on("click", function () {
-//     var city = $("#city-input").attr("button");
-//     console.log(city);
-
-//     var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + city + "&api_key=ad94bb02f7af4c71ad35b33a437f2aaf&limit=10";
-//     // make sure queryURL is set to https or else the app may not work properly when deployed to Github
-
-//     $.ajax({
-//             url: queryURL,
-//             method: "GET"
-//         })
-//         .done(function (response) {
-//             var results = response.data;
-
-//             for (var i = 0; i < results.length; i++) {
-//                 var gifDiv = $("<div class='item'>");
-
-//                 var rating = results[i].rating;
-
-//                 var p = $("<p>").text("Rating: " + rating);
-
-//                 var cityImage = $("<img>");
-//                 cityImage.attr("src", results[i].images.fixed_height.url);
-
-//                 $("#cities").append(cityImage);
-//             }
-//         }); //to close the done function
-
-// }); //to close the button on click function
+                // // Freeze and unfreeze the gifs upon click
+                // $(".gif").on("click", function () {
+                //     console.log(this);
+                //     var state = $(this).attr("data-state");
+                //     if (state === "still") {
+                //         $(this).attr("src", $(this).attr("data-animate"));
+                //         $(this).attr("data-state", "animate");
+                //     } else {
+                //         $(this).attr("src", $(this).attr("data-still"));
+                //         $(this).attr("data-state", "still");
+                //     }
+                // });
