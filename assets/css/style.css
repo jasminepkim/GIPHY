@@ -1,17 +1,45 @@
+body {
+    font-family: 'Faustina', serif;
+    background-image: url("../images/wallpaper.jpg");
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
 .citiesReady {
     margin-left: 8px;
     margin-bottom: 5px;
+    color: white;
+    background: rgba(0,0,0,0);
+    border: solid 5px #22B7CF;
+}
+
+/* To not float the gif images stacked vertically */
+#gifdiv {
+    display: inline-block;
+    margin-left: 5px; 
+    margin-right: 10px;
 }
 
 h2 {
     margin-left: 8px;
     margin-bottom: 25px;
+    color: white;
+}
+
+h4 {
+    float: right;
+    margin-right: 40px;
+    color: white;
 }
 
 #city-form {
     float: right;
     margin-right: 8px;
     margin-bottom: 5px;
+    border-style: solid;
+    border-width: 8px;
+    padding: 10px 12px;
 }
 
 #addCity {
@@ -21,4 +49,13 @@ h2 {
 
 img {
     margin-bottom: 10px;
+}
+
+#addCity {
+    background-color: #22A3E6;
+}
+
+label,
+p {
+    color: white;
 }

@@ -2,7 +2,7 @@ $(document).ready(function () {
 
     // Initial array of cities to loop through
     var topics = ["Paris", "Dubai", "New York City", "Seoul", "Los Angeles", "Tokyo", "San Diego", "Portland", "Honolulu", "Singapore", "San Francisco", "Sydney", "Seattle", "Bali", "Rome", "Istanbul", "Vancouver", "Mexico City"];
-    // console.log(topics);
+    console.log(topics);
     var state;
 
     renderButtons(topics);
@@ -26,9 +26,9 @@ $(document).ready(function () {
     }
 
     // To allow the user's input from the form to create buttons
-    // "submit" button
+    // AKA the "Submit" button
     $("#addCity").on("click", function (event) {
-        // "preventDefault" = prevents from refreshing after clicking the "submit" button
+        // "preventDefault" = prevents from refreshing after clicking the "submit" button has been clicked 
         event.preventDefault();
         var cityShown = $("#city-input").val();
         console.log(cityShown);
@@ -36,7 +36,7 @@ $(document).ready(function () {
         console.log(topics);
         renderButtons(topics);
     });
-    // console.log(topics);
+    console.log(topics);
 
     $(document).on("click", ".citiesReady", function () {
         var city = $(this).attr("data-name");
@@ -76,28 +76,7 @@ $(document).ready(function () {
                     cityDiv.append(p);
 
                     $("#cities").append(cityDiv);
-
-                    //     var cityDiv = $("<div>");
-                    //     // Paragraph tag created for the gif ratings
-                    //     var p = $("<p>").text("Rating: " + results[i].rating);
-                    //     // console.log(results[i].rating);
-                    //     // Image tag created for the gifs
-                    //     var imgDiv = $("<div id='gif'>");
-
-                    //     var cityImage = $("<img>");
-                    //     // To load gifs as static initially ("_still")
-                    //     stillGif = results[i].images.fixed_height_still.url;
-                    //     cityImage.attr("src", results[i].images.fixed_height_still.url);
-                    //     // console.log(results[i].images.fixed_height.url);
-                    //     // To append the ratings and gifs and to update the HTML
-
-                    //     imgDiv.append(cityImage + results[i].images.fixed_height_still.url);
-                    //     cityDiv.append(p + results[i].images.fixed_height_still.url);
-                    //     cityDiv.append(cityImage);
-                    //     $("#cities").append(cityImage);
-                    //     $("#cities").append(p);
                 }
-                // console.log(stillGif);
 
             }); // to close the done function
 
@@ -108,7 +87,6 @@ $(document).ready(function () {
 
     $(document).on("click", ".eachgif", function () {
         var state = $(this).attr("data-state");
-        console.log(state);
         if (state === "still") {
             $(this).attr("src", $(this).attr("data-animate"));
             $(this).attr("data-state", "animate");
@@ -117,19 +95,5 @@ $(document).ready(function () {
             $(this).attr("data-state", "still");
         }
     });
-
-    // Freeze and unfreeze the gifs upon click
-    // $("img.eachgif").on("click", function () {
-    //     console.log("click");
-    //     // var state = $(this).attr("data-state");
-    //     // if (state === "still") {
-    //     //     $(this).attr("src", $(this).attr("data-animate"));
-    //     //     $(this).attr("data-state", "animate");
-    //     // } else {
-    //     //     $(this).attr("src", $(this).attr("data-still"));
-    //     //     $(this).attr("data-state", "still");
-    //     // }
-    // });
-
 
 }); // to close the document.ready function
