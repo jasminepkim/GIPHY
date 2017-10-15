@@ -2,7 +2,6 @@ $(document).ready(function () {
 
     // Initial array of cities to loop through
     var topics = ["Paris", "Dubai", "New York City", "Seoul", "Los Angeles", "Tokyo", "San Diego", "Portland", "Honolulu", "Singapore", "San Francisco", "Sydney", "Seattle", "Bali", "Rome", "Istanbul", "Vancouver", "Mexico City"];
-    console.log(topics);
     var state;
 
     renderButtons(topics);
@@ -31,10 +30,10 @@ $(document).ready(function () {
         // "preventDefault" = prevents from refreshing after clicking the "submit" button has been clicked 
         event.preventDefault();
         var cityShown = $("#city-input").val();
-        console.log(cityShown);
         topics.push(cityShown);
-        console.log(topics);
         renderButtons(topics);
+        // to clear out input field after they've entered in a city
+        $("#city-input").val("");
     });
     console.log(topics);
 
